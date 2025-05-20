@@ -12,7 +12,6 @@ class GreedyFullObservableAgent : PlanetWarsPlayer() {
     private val FALLBACK_ATTACK_BUFFER = 1.5
     private val WEAK_PLANET_THRESHOLD = 10
 
-    private val shipWeight = 1.0
     private val distanceWeight = 0.5
     private val growthWeight = 2.0
 
@@ -24,7 +23,8 @@ class GreedyFullObservableAgent : PlanetWarsPlayer() {
 
     private fun scorePlanet(target: Planet, source: Planet): Double {
         val dist = distance(source, target)
-        return (target.nShips * shipWeight) + (dist * distanceWeight) - (target.growthRate * growthWeight)
+        val growth = target.growthRate
+        return (dist * distanceWeight) - (growth * growthWeight)
     }
 
     private fun enemyTransportersLaunchedFrom(planet: Planet, gameState: GameState): Boolean {
@@ -39,23 +39,22 @@ class GreedyFullObservableAgent : PlanetWarsPlayer() {
         val myPlanets = gameState.planets.filter { it.owner == player && it.transporter == null }
         if (myPlanets.isEmpty()) return Action.doNothing()
 
+        val strongestSource = myPlanets.maxByOrNull { it.nShips } ?: return Action.doNothing()
+
         val enemyOrNeutralPlanets = gameState.planets.filter { it.owner != player }
         if (enemyOrNeutralPlanets.isEmpty()) return Action.doNothing()
 
-        val strongestSource = myPlanets.maxByOrNull { it.nShips } ?: return Action.doNothing()
+        // Phase 1: Target with lowest score (closer and faster-growing)
+        val bestTarget = enemyOrNeutralPlanets.minByOrNull {
+            scorePlanet(it, strongestSource)
+        }
 
-        // Phase 1: Smart target selection based on scoring
-        val scoredTargets = enemyOrNeutralPlanets
-            .map { it to scorePlanet(it, strongestSource) }
-            .sortedBy { it.second }
-
-        val bestTarget = scoredTargets.firstOrNull()?.first
         if (bestTarget != null && strongestSource.nShips > bestTarget.nShips * ATTACK_SAFETY_BUFFER) {
             val numToSend = strongestSource.nShips / 2
             return Action(player, strongestSource.id, bestTarget.id, numToSend)
         }
 
-        // Phase 2: Opportunistic Attacks — enemy planets just launched a transporter
+        // Phase 2: Opportunistic attack if enemy launched from planet
         val vulnerableEnemies = enemyOrNeutralPlanets
             .filter { enemyTransportersLaunchedFrom(it, gameState) }
 
@@ -74,7 +73,7 @@ class GreedyFullObservableAgent : PlanetWarsPlayer() {
             return Action(player, strong.id, weakest.id, numToSend)
         }
 
-        // Phase 4: Fallback attack with variable strength
+        // Phase 4: Fallback attack
         val fallbackTarget = enemyOrNeutralPlanets.minByOrNull { it.nShips } ?: return Action.doNothing()
         val fallbackSource = myPlanets.maxByOrNull { it.nShips } ?: return Action.doNothing()
 
