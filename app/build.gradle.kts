@@ -82,5 +82,5 @@ application {
 }
 
 kotlin {
-    jvmToolchain(20) // Ensure Kotlin targets JVM 20 as well
+    jvmToolchain(17) // Ensure Kotlin targets JVM 20 as well
 }

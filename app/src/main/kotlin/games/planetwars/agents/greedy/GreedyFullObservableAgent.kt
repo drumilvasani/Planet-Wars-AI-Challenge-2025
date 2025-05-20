@@ -46,8 +46,8 @@ class GreedyFullObservableAgent : PlanetWarsPlayer() {
 
         // Phase 1: Smart target selection based on scoring
         val scoredTargets = enemyOrNeutralPlanets
-                .map { it to scorePlanet(it, strongestSource) }
-                .sortedBy { it.second }
+            .map { it to scorePlanet(it, strongestSource) }
+            .sortedBy { it.second }
 
         val bestTarget = scoredTargets.firstOrNull()?.first
         if (bestTarget != null && strongestSource.nShips > bestTarget.nShips * ATTACK_SAFETY_BUFFER) {
@@ -57,7 +57,7 @@ class GreedyFullObservableAgent : PlanetWarsPlayer() {
 
         // Phase 2: Opportunistic Attacks — enemy planets just launched a transporter
         val vulnerableEnemies = enemyOrNeutralPlanets
-                .filter { enemyTransportersLaunchedFrom(it, gameState) }
+            .filter { enemyTransportersLaunchedFrom(it, gameState) }
 
         val opportunisticTarget = vulnerableEnemies.minByOrNull { it.nShips }
         if (opportunisticTarget != null) {
