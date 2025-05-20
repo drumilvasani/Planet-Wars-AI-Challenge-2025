@@ -4,7 +4,6 @@ import games.planetwars.agents.Action
 import games.planetwars.agents.PlanetWarsPlayer
 import games.planetwars.core.GameState
 import games.planetwars.core.Planet
-import games.planetwars.core.Player
 import kotlin.math.hypot
 
 class GreedyFullObservableAgent : PlanetWarsPlayer() {
