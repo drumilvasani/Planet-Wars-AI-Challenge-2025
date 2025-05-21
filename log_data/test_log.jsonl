@@ -3,7 +3,7 @@
     "target": "agent",
     "className": null,
     "method": "prepareToPlayAs",
-    "objectId": "f71b2a76-5dd6-433d-8bfe-1d7c7a827349",
+    "objectId": "cda94df1-5ebb-434f-bdef-219fb0b9d0e6",
     "args": [
         "Player1",
         {
@@ -28,21 +28,7 @@
 }}
 {"dir":"recv","json":{
     "status": "ok",
-    "result": "GreedyFullObservableAgent",
-    "error": null
-}}
-{"dir":"send","json":{
-    "requestType": "invoke",
-    "target": "agent",
-    "className": null,
-    "method": "getAgentType",
-    "objectId": "f71b2a76-5dd6-433d-8bfe-1d7c7a827349",
-    "args": [
-    ]
-}}
-{"dir":"recv","json":{
-    "status": "ok",
-    "result": "GreedyFullObservableAgent",
+    "result": "Careful Random Agent",
     "error": null
 }}
 {"dir":"send","json":{
@@ -50,56 +36,56 @@
     "target": "agent",
     "className": null,
     "method": "getAction",
-    "objectId": "f71b2a76-5dd6-433d-8bfe-1d7c7a827349",
+    "objectId": "cda94df1-5ebb-434f-bdef-219fb0b9d0e6",
     "args": [
         {
             "type": "games.planetwars.core.GameState",
             "planets": [
                 {
                     "owner": "Player1",
-                    "nShips": 17.883562921068098,
+                    "nShips": 8.72542347981701,
                     "position": {
-                        "x": 90.0,
-                        "y": 150.0
+                        "x": 271.0,
+                        "y": 415.0
                     },
-                    "growthRate": 0.04987905701665453,
-                    "radius": 9.975811403330907,
+                    "growthRate": 0.0420736318455085,
+                    "radius": 8.4147263691017,
                     "transporter": null,
                     "id": 0
                 },
                 {
                     "owner": "Player1",
-                    "nShips": 6.596267041139784,
+                    "nShips": 4.4598893248628535,
                     "position": {
-                        "x": 170.0,
-                        "y": 402.0
+                        "x": 143.0,
+                        "y": 399.0
                     },
-                    "growthRate": 0.0936555899693151,
-                    "radius": 18.73111799386302,
+                    "growthRate": 0.09483538147857977,
+                    "radius": 18.967076295715955,
                     "transporter": null,
                     "id": 1
                 },
                 {
                     "owner": "Player2",
-                    "nShips": 17.883562921068098,
+                    "nShips": 8.72542347981701,
                     "position": {
-                        "x": 550.0,
-                        "y": 330.0
+                        "x": 369.0,
+                        "y": 65.0
                     },
-                    "growthRate": 0.04987905701665453,
-                    "radius": 9.975811403330907,
+                    "growthRate": 0.0420736318455085,
+                    "radius": 8.4147263691017,
                     "transporter": null,
                     "id": 2
                 },
                 {
                     "owner": "Player2",
-                    "nShips": 6.596267041139784,
+                    "nShips": 4.4598893248628535,
                     "position": {
-                        "x": 470.0,
-                        "y": 78.0
+                        "x": 497.0,
+                        "y": 81.0
                     },
-                    "growthRate": 0.0936555899693151,
-                    "radius": 18.73111799386302,
+                    "growthRate": 0.09483538147857977,
+                    "radius": 18.967076295715955,
                     "transporter": null,
                     "id": 3
                 }
@@ -113,9 +99,9 @@
     "result": {
         "type": "games.planetwars.agents.Action",
         "playerId": "Player1",
-        "sourcePlanetId": 0,
-        "destinationPlanetId": 3,
-        "numShips": 8.941781460534049
+        "sourcePlanetId": 1,
+        "destinationPlanetId": 2,
+        "numShips": 2.2299446624314267
     },
     "error": null
 }}
@@ -124,69 +110,69 @@
     "target": "agent",
     "className": null,
     "method": "getAction",
-    "objectId": "f71b2a76-5dd6-433d-8bfe-1d7c7a827349",
+    "objectId": "cda94df1-5ebb-434f-bdef-219fb0b9d0e6",
     "args": [
         {
             "type": "games.planetwars.core.GameState",
             "planets": [
                 {
                     "owner": "Player1",
-                    "nShips": 8.991660517550704,
+                    "nShips": 8.767497111662518,
                     "position": {
-                        "x": 90.0,
-                        "y": 150.0
+                        "x": 271.0,
+                        "y": 415.0
                     },
-                    "growthRate": 0.04987905701665453,
-                    "radius": 9.975811403330907,
-                    "transporter": {
-                        "s": {
-                            "x": 92.94755746057997,
-                            "y": 149.44151542852168
-                        },
-                        "v": {
-                            "x": 2.9475574605799775,
-                            "y": -0.5584845714783115
-                        },
-                        "owner": "Player1",
-                        "sourceIndex": 0,
-                        "destinationIndex": 3,
-                        "nShips": 8.941781460534049
-                    },
+                    "growthRate": 0.0420736318455085,
+                    "radius": 8.4147263691017,
+                    "transporter": null,
                     "id": 0
                 },
                 {
                     "owner": "Player1",
-                    "nShips": 6.689922631109099,
+                    "nShips": 2.3247800439100064,
                     "position": {
-                        "x": 170.0,
-                        "y": 402.0
+                        "x": 143.0,
+                        "y": 399.0
                     },
-                    "growthRate": 0.0936555899693151,
-                    "radius": 18.73111799386302,
-                    "transporter": null,
+                    "growthRate": 0.09483538147857977,
+                    "radius": 18.967076295715955,
+                    "transporter": {
+                        "s": {
+                            "x": 144.68122830230064,
+                            "y": 396.5153528629716
+                        },
+                        "v": {
+                            "x": 1.6812283023006385,
+                            "y": -2.4846471370283774
+                        },
+                        "owner": "Player1",
+                        "sourceIndex": 1,
+                        "destinationIndex": 2,
+                        "nShips": 2.2299446624314267
+                    },
                     "id": 1
                 },
                 {
                     "owner": "Player2",
-                    "nShips": 17.93344197808475,
+                    "nShips": 8.767497111662518,
                     "position": {
-                        "x": 550.0,
-                        "y": 330.0
+                        "x": 369.0,
+                        "y": 65.0
                     },
-                    "growthRate": 0.04987905701665453,
-                    "radius": 9.975811403330907,
+                    "growthRate": 0.0420736318455085,
+                    "radius": 8.4147263691017,
                     "transporter": null,
                     "id": 2
                 },
                 {
                     "owner": "Player2",
-                    "nShips": 6.689922631109099,
+                    "nShips": 4.554724706341434,
                     "position": {
-                        "x": 470.0,
-                        "y": 78.0
+                        "x": 497.0,
+                        "y": 81.0
                     },
-                    "growthRate": 0.0936555899693151,
-                    "radius": 18.73111799386302,
+                    "growthRate": 0.09483538147857977,
+                    "radius": 18.967076295715955,
                     "transporter": null,
                     "id": 3
                 }
@@ -200,9 +186,9 @@
     "result": {
         "type": "games.planetwars.agents.Action",
         "playerId": "Player1",
-        "sourcePlanetId": 1,
-        "destinationPlanetId": 1,
-        "numShips": 1.6724806577772748
+        "sourcePlanetId": 0,
+        "destinationPlanetId": 3,
+        "numShips": 4.383748555831259
     },
     "error": null
 }}
@@ -211,70 +197,96 @@
     "target": "agent",
     "className": null,
     "method": "getAction",
-    "objectId": "f71b2a76-5dd6-433d-8bfe-1d7c7a827349",
+    "objectId": "cda94df1-5ebb-434f-bdef-219fb0b9d0e6",
     "args": [
         {
             "type": "games.planetwars.core.GameState",
             "planets": [
                 {
                     "owner": "Player1",
-                    "nShips": 9.04153957456736,
+                    "nShips": 4.425822187676768,
                     "position": {
-                        "x": 90.0,
-                        "y": 150.0
+                        "x": 271.0,
+                        "y": 415.0
                     },
-                    "growthRate": 0.04987905701665453,
-                    "radius": 9.975811403330907,
+                    "growthRate": 0.0420736318455085,
+                    "radius": 8.4147263691017,
                     "transporter": {
                         "s": {
-                            "x": 95.89511492115994,
-                            "y": 148.88303085704337
+                            "x": 272.6812283023006,
+                            "y": 412.5153528629716
                         },
                         "v": {
-                            "x": 2.9475574605799775,
-                            "y": -0.5584845714783115
+                            "x": 1.6812283023006385,
+                            "y": -2.4846471370283774
                         },
                         "owner": "Player1",
                         "sourceIndex": 0,
                         "destinationIndex": 3,
-                        "nShips": 8.941781460534049
+                        "nShips": 4.383748555831259
                     },
                     "id": 0
                 },
                 {
                     "owner": "Player1",
-                    "nShips": 6.783578221078415,
+                    "nShips": 2.419615425388586,
                     "position": {
-                        "x": 170.0,
-                        "y": 402.0
+                        "x": 143.0,
+                        "y": 399.0
                     },
-                    "growthRate": 0.0936555899693151,
-                    "radius": 18.73111799386302,
-                    "transporter": null,
+                    "growthRate": 0.09483538147857977,
+                    "radius": 18.967076295715955,
+                    "transporter": {
+                        "s": {
+                            "x": 146.36245660460128,
+                            "y": 394.0307057259432
+                        },
+                        "v": {
+                            "x": 1.6812283023006385,
+                            "y": -2.4846471370283774
+                        },
+                        "owner": "Player1",
+                        "sourceIndex": 1,
+                        "destinationIndex": 2,
+                        "nShips": 2.2299446624314267
+                    },
                     "id": 1
                 },
                 {
                     "owner": "Player2",
-                    "nShips": 17.983321035101405,
+                    "nShips": 8.809570743508026,
                     "position": {
-                        "x": 550.0,
-                        "y": 330.0
+                        "x": 369.0,
+                        "y": 65.0
                     },
-                    "growthRate": 0.04987905701665453,
-                    "radius": 9.975811403330907,
+                    "growthRate": 0.0420736318455085,
+                    "radius": 8.4147263691017,
                     "transporter": null,
                     "id": 2
                 },
                 {
                     "owner": "Player2",
-                    "nShips": 6.783578221078415,
+                    "nShips": 2.3721977346492964,
                     "position": {
-                        "x": 470.0,
-                        "y": 78.0
+                        "x": 497.0,
+                        "y": 81.0
                     },
-                    "growthRate": 0.0936555899693151,
-                    "radius": 18.73111799386302,
-                    "transporter": null,
+                    "growthRate": 0.09483538147857977,
+                    "radius": 18.967076295715955,
+                    "transporter": {
+                        "s": {
+                            "x": 495.3187716976994,
+                            "y": 83.48464713702838
+                        },
+                        "v": {
+                            "x": -1.6812283023006385,
+                            "y": 2.4846471370283774
+                        },
+                        "owner": "Player2",
+                        "sourceIndex": 3,
+                        "destinationIndex": 0,
+                        "nShips": 2.277362353170717
+                    },
                     "id": 3
                 }
             ],
@@ -286,10 +298,10 @@
     "status": "ok",
     "result": {
         "type": "games.planetwars.agents.Action",
-        "playerId": "Player1",
-        "sourcePlanetId": 1,
-        "destinationPlanetId": 1,
-        "numShips": 1.6958945552696036
+        "playerId": "Neutral",
+        "sourcePlanetId": -1,
+        "destinationPlanetId": -1,
+        "numShips": 0.0
     },
     "error": null
 }}

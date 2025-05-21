@@ -1,8 +1,5 @@
 package games.planetwars.agents
 
-
-import games.planetwars.agents.Action
-import games.planetwars.agents.PlanetWarsAgent
 import games.planetwars.agents.random.PureRandomAgent
 import games.planetwars.core.*
 import games.planetwars.runners.GameRunnerCoRoutines
