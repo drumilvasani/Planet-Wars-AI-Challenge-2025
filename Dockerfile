@@ -1,6 +1,7 @@
+
+
 # Use Java 20 instead of Java 17
 FROM eclipse-temurin:20-jdk
-# FROM .gradle/8.12
 
 # Set working directory inside the container
 WORKDIR /app
