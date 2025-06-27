@@ -26,7 +26,7 @@ fun main() {
 //    agents.add(remoteAgent)
 //    val agents = SamplePlayerLists().getFullList()
 //    agents.add(DoNothingAgent())
-    val league = RoundRobinLeague(agents, gameParams = gameParams, gamesPerPair = 10, runRemoteAgents = true)
+    val league = RoundRobinLeague(agents, gameParams = gameParams, gamesPerPair = 50, runRemoteAgents = true)
     val results = league.runRoundRobin()
     // use the League utils to print the results
     println(results)

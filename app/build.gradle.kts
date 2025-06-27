@@ -47,6 +47,9 @@ dependencies {
 
     // Additional Libraries
     implementation("com.google.guava:guava:32.1.2-jre")
+
+    // SLF4J Implementation
+    implementation("org.slf4j:slf4j-simple:1.7.36")
 }
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
