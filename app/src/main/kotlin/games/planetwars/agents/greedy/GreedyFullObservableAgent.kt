@@ -5,16 +5,15 @@ import games.planetwars.agents.PlanetWarsPlayer
 import games.planetwars.core.GameState
 import games.planetwars.core.Planet
 import kotlin.math.hypot
+import kotlin.random.Random
 
 class GreedyFullObservableAgent : PlanetWarsPlayer() {
 
-    private val ATTACK_SAFETY_BUFFER = 1.2
-    private val FALLBACK_ATTACK_BUFFER = 1.5
-    private val WEAK_PLANET_THRESHOLD = 10
-
-    private val shipWeight = 1.0
     private val distanceWeight = 0.5
     private val growthWeight = 2.0
+    private val shipGainWeight = 1.0
+    private val safetyBuffer = 1.2
+    private val random = Random.Default
 
     private fun distance(p1: Planet, p2: Planet): Double {
         val dx = p1.position.x - p2.position.x
@@ -22,69 +21,51 @@ class GreedyFullObservableAgent : PlanetWarsPlayer() {
         return hypot(dx, dy)
     }
 
-    private fun scorePlanet(target: Planet, source: Planet): Double {
+    private fun scoreAction(source: Planet, target: Planet): Double {
         val dist = distance(source, target)
-        return (target.nShips * shipWeight) + (dist * distanceWeight) - (target.growthRate * growthWeight)
-    }
-
-    private fun enemyTransportersLaunchedFrom(planet: Planet, gameState: GameState): Boolean {
-        return gameState.planets.any { other ->
-            other.transporter?.let { t ->
-                t.sourceIndex == planet.id && t.owner != player
-            } ?: false
-        }
+        val growthPotential = target.growthRate
+        val shipCost = target.nShips
+        return -shipCost * shipGainWeight + growthPotential * growthWeight - dist * distanceWeight
     }
 
     override fun getAction(gameState: GameState): Action {
         val myPlanets = gameState.planets.filter { it.owner == player && it.transporter == null }
-        if (myPlanets.isEmpty()) return Action.doNothing()
+        val targets = gameState.planets.filter { it.owner != player }
 
-        val enemyOrNeutralPlanets = gameState.planets.filter { it.owner != player }
-        if (enemyOrNeutralPlanets.isEmpty()) return Action.doNothing()
-
-        val strongestSource = myPlanets.maxByOrNull { it.nShips } ?: return Action.doNothing()
-
-        // Phase 1: Smart target selection based on scoring
-        val scoredTargets = enemyOrNeutralPlanets
-            .map { it to scorePlanet(it, strongestSource) }
-            .sortedBy { it.second }
-
-        val bestTarget = scoredTargets.firstOrNull()?.first
-        if (bestTarget != null && strongestSource.nShips > bestTarget.nShips * ATTACK_SAFETY_BUFFER) {
-            val numToSend = strongestSource.nShips / 2
-            return Action(player, strongestSource.id, bestTarget.id, numToSend)
+        if (myPlanets.isEmpty() || targets.isEmpty()) {
+            return Action.doNothing()
         }
 
-        // Phase 2: Opportunistic Attacks — enemy planets just launched a transporter
-        val vulnerableEnemies = enemyOrNeutralPlanets
-            .filter { enemyTransportersLaunchedFrom(it, gameState) }
+        // Evaluate all source-target pairs
+        val candidateActions = mutableListOf<Triple<Planet, Planet, Double>>()
 
-        val opportunisticTarget = vulnerableEnemies.minByOrNull { it.nShips }
-        if (opportunisticTarget != null) {
-            val numToSend = strongestSource.nShips / 2
-            return Action(player, strongestSource.id, opportunisticTarget.id, numToSend)
+        for (source in myPlanets) {
+            for (target in targets) {
+                if (source.nShips > target.nShips * safetyBuffer) {
+                    val score = scoreAction(source, target) + random.nextDouble(0.0, 0.1) // tiebreaker
+                    candidateActions.add(Triple(source, target, score))
+                }
+            }
         }
 
-        // Phase 3: Reinforce weak owned planets
-        val weakOwnedPlanets = myPlanets.filter { it.nShips < WEAK_PLANET_THRESHOLD }
-        if (weakOwnedPlanets.isNotEmpty()) {
-            val weakest = weakOwnedPlanets.minByOrNull { it.nShips } ?: return Action.doNothing()
-            val strong = myPlanets.maxByOrNull { it.nShips } ?: return Action.doNothing()
-            val numToSend = strong.nShips / 4
-            return Action(player, strong.id, weakest.id, numToSend)
+        // Pick best move
+        val best = candidateActions.maxByOrNull { it.third }
+        if (best != null) {
+            val (source, target, _) = best
+            val numToSend = source.nShips / 2
+            return Action(player, source.id, target.id, numToSend)
         }
 
-        // Phase 4: Fallback attack with variable strength
-        val fallbackTarget = enemyOrNeutralPlanets.minByOrNull { it.nShips } ?: return Action.doNothing()
-        val fallbackSource = myPlanets.maxByOrNull { it.nShips } ?: return Action.doNothing()
-
-        val fallbackNumToSend = if (fallbackSource.nShips > fallbackTarget.nShips * FALLBACK_ATTACK_BUFFER) {
-            fallbackSource.nShips / 2
-        } else {
-            fallbackSource.nShips / 3
+        // Optional: reinforce weakest owned planet
+        val weakPlanets = myPlanets.filter { it.nShips < 10 }
+        if (weakPlanets.size >= 2) {
+            val weakest = weakPlanets.minByOrNull { it.nShips } ?: return Action.doNothing()
+            val strongest = myPlanets.maxByOrNull { it.nShips } ?: return Action.doNothing()
+            val numToSend = strongest.nShips / 4
+            return Action(player, strongest.id, weakest.id, numToSend)
         }
 
-        return Action(player, fallbackSource.id, fallbackTarget.id, fallbackNumToSend)
+        return Action.doNothing()
     }
 
     override fun getAgentType(): String = "GreedyFullObservableAgent"
