@@ -2,6 +2,7 @@ package games.planetwars.runners
 
 import games.planetwars.agents.PlanetWarsAgent
 import games.planetwars.agents.greedy.GreedyFullObservableAgent
+import games.planetwars.agents.greedy.GreedyLookaheadAgent
 import games.planetwars.agents.random.BetterRandomAgent
 import games.planetwars.agents.random.PureRandomAgent
 import games.planetwars.core.*
@@ -68,11 +69,11 @@ data class GameRunner(
 }
 
 fun main() {
-    val gameParams = GameParams(numPlanets = 20)
+    val gameParams = GameParams(numPlanets = 50)
 //    val gameState = GameStateFactory(gameParams).createGame()
 //    val agent1 = PureRandomAgent()
     val agent1 = GreedyFullObservableAgent()
-    val agent2 = BetterRandomAgent()
+    val agent2 = GreedyLookaheadAgent()
     val gameRunner = GameRunner(agent1, agent2, gameParams)
     val finalModel = gameRunner.runGame()
     println("Game over!")
