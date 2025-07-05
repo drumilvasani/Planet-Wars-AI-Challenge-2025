@@ -9,24 +9,25 @@ import games.planetwars.agents.random.BetterRandomAgent
 import games.planetwars.agents.random.CarefulRandomAgent
 import games.planetwars.agents.random.PureRandomAgent
 import games.planetwars.agents.greedy.GreedyFullObservableAgent
-import games.planetwars.agents.random.HeavyRandomAgent
+import games.planetwars.agents.greedy.GreedyLookaheadAgent
 import games.planetwars.core.GameParams
 import games.planetwars.core.Player
 
 fun main() {
 
-    val gameParams = GameParams(numPlanets = 20, maxTicks = 2000)
+    val gameParams = GameParams(numPlanets = 20, width = 800, height = 800, maxTicks = 500)
 
     val agents = SamplePlayerLists().getFullList()
 
     agents.add(GreedyHeuristicAgent())
     agents.add(GreedyFullObservableAgent())
+    agents.add(GreedyLookaheadAgent())
     val remoteAgent = RemoteAgent("<specified by remote server>", port = 9003)
 
 //    agents.add(remoteAgent)
 //    val agents = SamplePlayerLists().getFullList()
 //    agents.add(DoNothingAgent())
-    val league = RoundRobinLeague(agents, gameParams = gameParams, gamesPerPair = 50, runRemoteAgents = true)
+    val league = RoundRobinLeague(agents, gameParams = gameParams, gamesPerPair = 25, runRemoteAgents = true)
     val results = league.runRoundRobin()
     // use the League utils to print the results
     println(results)
