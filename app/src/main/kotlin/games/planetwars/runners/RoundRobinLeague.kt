@@ -15,7 +15,7 @@ import games.planetwars.core.Player
 
 fun main() {
 
-    val gameParams = GameParams(numPlanets = 20, width = 800, height = 800, maxTicks = 500)
+    val gameParams = GameParams(numPlanets = 20, maxTicks = 2000)
 
     val agents = SamplePlayerLists().getFullList()
 
@@ -27,7 +27,7 @@ fun main() {
 //    agents.add(remoteAgent)
 //    val agents = SamplePlayerLists().getFullList()
 //    agents.add(DoNothingAgent())
-    val league = RoundRobinLeague(agents, gameParams = gameParams, gamesPerPair = 25, runRemoteAgents = true)
+    val league = RoundRobinLeague(agents, gameParams = gameParams, gamesPerPair = 10, runRemoteAgents = true)
     val results = league.runRoundRobin()
     // use the League utils to print the results
     println(results)
@@ -62,8 +62,8 @@ class SamplePlayerLists {
 
     fun getFullList(): MutableList<PlanetWarsAgent> {
         return mutableListOf(
-            PureRandomAgent(),
-            BetterRandomAgent(),
+//            PureRandomAgent(),
+//            BetterRandomAgent(),
             CarefulRandomAgent(),
             SimpleEvoAgent(
                 useShiftBuffer = true,
