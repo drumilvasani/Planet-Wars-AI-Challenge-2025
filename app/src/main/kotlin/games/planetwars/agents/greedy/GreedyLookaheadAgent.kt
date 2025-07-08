@@ -11,61 +11,44 @@ import kotlin.random.Random
 
 class GreedyLookaheadAgent : PlanetWarsPlayer() {
 
-    private val random = Random.Default
-
     override fun getAgentType(): String = "Greedy Lookahead Agent"
 
     override fun getAction(gameState: GameState): Action {
-        val myPlanets = gameState.planets.filter {
-            it.owner == player && it.transporter == null && it.nShips > 10
+        val myPlanets = gameState.planets.filter { it.owner == player && it.transporter == null && it.nShips > 10 }
+        val targets = gameState.planets.filter { it.owner != player }
+
+        if (myPlanets.isEmpty() || targets.isEmpty()) {
+            return Action.doNothing()
         }
 
-        if (myPlanets.isEmpty()) return Action.doNothing()
-
-        val enemyOrNeutral = gameState.planets.filter { it.owner != player }
-
-        val candidateMoves = mutableListOf<Triple<Planet, Planet, Double>>()
+        val candidateActions = mutableListOf<Triple<Planet, Planet, Double>>()
 
         for (source in myPlanets) {
-            for (target in enemyOrNeutral) {
-                val score = evaluateTarget(source, target, gameState) + random.nextDouble(0.0, 0.1) // Tiebreaker
-                if (score != Double.NEGATIVE_INFINITY) {
-                    candidateMoves.add(Triple(source, target, score))
+            for (target in targets) {
+                if (source.nShips > target.nShips * 1.2) { // Safety buffer
+                    val score = evaluateTarget(source, target, gameState) + Random.nextDouble(0.0, 0.1) // Tiebreaker
+                    candidateActions.add(Triple(source, target, score))
                 }
             }
         }
 
-        val bestMove = candidateMoves.maxByOrNull { it.third } ?: return Action.doNothing()
-        val (source, target, _) = bestMove
-
-        val optimalShipsToSend = calculateOptimalShipsToSend(source, target, gameState)
-        if (optimalShipsToSend <= 0 || optimalShipsToSend >= source.nShips) return Action.doNothing()
-
-        return Action(player, source.id, target.id, optimalShipsToSend.toDouble())
-    }
-
-    private fun calculateOptimalShipsToSend(source: Planet, target: Planet, gameState: GameState): Int {
-        val distance = source.position.distance(target.position)
-        val ticksToArrival = distance / params.transporterSpeed
-        val growthDuringTravel = target.growthRate * ticksToArrival
-        val estimatedDefense = target.nShips + growthDuringTravel
-
-        // Calculate ships needed for attack
-        var optimalShipsToSend = (estimatedDefense * 1.25).toInt()
-
-        // Ensure source planet retains enough ships for defense
-        val defenseBuffer = 10 // Example buffer
-        optimalShipsToSend = min(optimalShipsToSend, source.nShips.toInt() - defenseBuffer)
-
-        // Prioritize high-growth targets
-        if (target.growthRate > 3.0) {
-            optimalShipsToSend = max(optimalShipsToSend, source.nShips.toInt() / 2)
+        val best = candidateActions.maxByOrNull { it.third }
+        if (best != null) {
+            val (source, target, _) = best
+            val numToSend = source.nShips / 2
+            return Action(player, source.id, target.id, numToSend)
         }
 
-        // Ensure calculated ships do not exceed available ships
-        optimalShipsToSend = min(optimalShipsToSend, source.nShips.toInt())
+        // Reinforce weakest owned planet
+        val weakPlanets = myPlanets.filter { it.nShips < 10 }
+        if (weakPlanets.isNotEmpty()) {
+            val weakest = weakPlanets.minByOrNull { it.nShips } ?: return Action.doNothing()
+            val strongest = myPlanets.maxByOrNull { it.nShips } ?: return Action.doNothing()
+            val numToSend = strongest.nShips / 4
+            return Action(player, strongest.id, weakest.id, numToSend)
+        }
 
-        return max(optimalShipsToSend, 0) // Ensure non-negative ship count
+        return Action.doNothing()
     }
 
     private fun evaluateTarget(source: Planet, target: Planet, gameState: GameState): Double {
